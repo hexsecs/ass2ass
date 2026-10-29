@@ -62,4 +62,22 @@ Read the [protocol](skills/ass2ass/references/protocol.md) and [surface mappings
 PYTHONPATH=skills/ass2ass/scripts python3 -m unittest discover -s tests -v
 ```
 
-Next: interoperability fixtures, a JSON Schema, a second automated surface adapter, then authenticated identity and optional work-claim semantics. Preserve the skill-first design: agents should be able to use the envelope through existing tools without adopting a new service.
+## Experimental backends: enter through the side pipe
+
+The opt-in POSIX pipe prototype exchanges the same envelopes through stdin/stdout
+or named FIFOs. Two agents, one conversation, absolutely no payload execution.
+
+```bash
+python3 examples/pipe_round_trip.py
+python3 examples/pipe_round_trip.py --mode fifo
+```
+
+Explore [experimental backend protocols](docs/experimental-backends.md), or inspect
+the [leaderboard and metrics](docs/leaderboard.md). The honours include **Fastest
+ASS in the West**, **Least Clogged**, and **Most Lubed**. The jokes are cheeky;
+the measurements come with receipts.
+
+Follow the [roadmap](https://github.com/hexsecs/ass2ass/issues/1) for interoperability
+fixtures, a JSON Schema, additional surfaces, and future identity/work-claim design.
+Preserve the skill-first design: agents should be able to use the envelope through
+existing tools without adopting a new service.

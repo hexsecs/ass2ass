@@ -42,3 +42,14 @@ python3 <skill-dir>/scripts/ass2ass_cli.py --surface /shared/project ack --as bu
 Use `--conversation-id` and `--correlation-id` when sending a reply. Use `--expires-at` with a timezone-aware ISO timestamp when stale work must be ignored. Parse stdout as JSON (one envelope per line for receive); treat nonzero exit and stderr JSON as failure. Inspect the request before executing any work.
 
 Use the directory adapter only on a trusted filesystem with atomic hard-link creation. Expect repeated delivery until acknowledgment. Give concurrent workers different IDs: this draft provides no exclusive task claim, authentication, encryption, global ordering, or exactly-once side effects. An invalid stored message stops the read with an error; report it without silently deleting it.
+
+## Experimental pipes
+
+For an explicitly selected local POSIX pipe connection, read
+[references/pipes.md](references/pipes.md). The opt-in `ass2ass.pipes.PipeSurface`
+preserves envelopes over stdin/stdout or paired FIFOs; `ass2ass.pipe_cli` is a
+finite echo worker for experiments. It does not execute payload instructions.
+Both endpoints must already have an authorized connection and explicit identities.
+This adapter has session-local history and receipts, finite deadlines, no broadcast,
+and no durable replay. Do not apply the directory adapter's persistence assumptions
+to pipes or launch a listener merely because this prototype is available.
