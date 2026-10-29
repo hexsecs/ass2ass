@@ -1,0 +1,4 @@
+interface:
+  display_name: "ASS2ASS"
+  short_description: "Coordinate agents over any shared surface"
+  default_prompt: "Use $ass2ass to exchange structured messages with another agent over a shared surface."
