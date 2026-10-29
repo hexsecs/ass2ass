@@ -4,6 +4,9 @@ Use only a location and recipient authorized by the task. Do not install integra
 
 These are agent-executed mappings, not implemented automated adapters. A common envelope does not make every surface provide the same delivery guarantees.
 
+An opt-in automated POSIX pipe prototype is documented separately in
+[pipes.md](pipes.md); it uses session-local receipts and has no durable queue.
+
 ## Appendable text: issue comments, chat, documents
 
 Append one complete JSON envelope in a fenced block labeled `ass2ass`:
