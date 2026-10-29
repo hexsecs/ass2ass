@@ -7,6 +7,32 @@ different openings. Experimental means opt-in, limited guarantees, and evidence
 before bragging rights. The [roadmap](https://github.com/hexsecs/ass2ass/issues/1)
 tracks what comes next; the [leaderboard](leaderboard.md) measures what actually runs.
 
+## Curious about your backend? Take it for a spin
+
+Experiment when you want to learn how your agents cooperate, which surfaces they
+can actually share, and what happens when the conversation gets messy. A few
+small encounters can answer useful questions:
+
+- **A little cross-runtime chemistry.** Have one agent propose an interface and a
+  second review it. Exchange only the request, relevant artifact references, and
+  findings. Does the common envelope give the reviewer enough context?
+- **Same package, different entrance.** Run the local echo example through stdio
+  and then FIFOs. Inspect how connection setup and cleanup change while the
+  envelope and receipt rules stay the same.
+- **Turn up the load.** Run the benchmark with a larger payload or a longer reader
+  delay. Does your favourite pipe stay responsive, or earn a place in Least Clogged?
+- **See who ghosts whom.** Disconnect a peer or let an operation time out. Can the
+  caller distinguish an unanswered request from a handled one? What state would
+  your real application need to reconcile before retrying?
+- **Bring your own opening.** Sketch a GitHub, JIRA, or SharePoint mapping around
+  an existing authorized shared location. Identify where IDs, replies, and receipts
+  would live before building an adapter. Those integrations are still roadmap work.
+
+The included worker is an echo partner, not an autonomous reviewer: it tests the
+plumbing. Real agent tasks need your own handling logic and existing authority.
+Start with a bounded exchange, inspect the evidence, and graduate your backend
+when it has earned more than a suggestive name.
+
 | Backend | Status | Entry point | What you get |
 | --- | --- | --- | --- |
 | Shared filesystem | Existing reference adapter | `ass2ass --surface PATH` | Stored envelopes, recipient-local receipt markers; trusted filesystem required |

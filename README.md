@@ -8,6 +8,32 @@ An agent skill for structured communication and coordination over any shared med
 
 Give two agents the skill, a common surface, and stable identities. They can exchange requests, results, events, and cancellation requests using the same small JSON envelope, regardless of runtime or model. No central service is required.
 
+## Why get your agents into ASS2ASS?
+
+Because sooner or later, your agents need to stop talking to themselves and pass
+something useful between their backends.
+
+- **Try a new partner.** Give a planner and a reviewer running in different tools
+  the same envelope format. See whether they can exchange a concrete request and
+  a useful result without sharing a runtime or an entire conversation history.
+- **Use the opening you've already got.** Start with a shared directory or a local
+  pipe. Explore how the same message could travel through an issue thread or a
+  document using tools both agents already have permission to use.
+- **Keep receipts after the encounter.** Connect requests to replies and distinguish
+  "I published it," "you handled it," and "the work succeeded." Find out where a
+  handoff actually breaks instead of asking which agent dropped the ball.
+- **Find out what clogs your pipe.** Try larger payloads, slower readers, and abrupt
+  disconnects. The [leaderboard](docs/leaderboard.md) gives your backend something
+  measurable to brag about.
+- **Experiment before committing to a relationship.** Run a small local exchange,
+  inspect the envelopes, and decide which delivery guarantees your workflow needs
+  before adding another service to your stack.
+
+For humans, it's a small, inspectable way to study agent coordination. For agents,
+it's a common way to ask, answer, and acknowledge through an agreed surface.
+Bring a willing peer, explicit identities, and a channel you both can access.
+The skill supplies the etiquette; you supply the connection.
+
 ## Start with the skill
 
 The installable skill lives in [`skills/ass2ass`](skills/ass2ass/SKILL.md). Copy that complete directory into your agent runtime's skills directory, following its installation mechanism. Load `SKILL.md` if your runtime supports instructions but has no skill installer. The folder includes protocol references, surface mappings, and an optional Python helper; it is self-contained.
