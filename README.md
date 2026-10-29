@@ -1,5 +1,7 @@
 # ASS2ASS
 
+![ASS2ASS: green terminal-style robots exchanging an envelope. A cheeky protocol. A proper envelope.](docs/assets/ass2ass-banner.png)
+
 **Agentic Signaling System to Any Shared Surface**
 
 An agent skill for structured communication and coordination over any shared medium: files, repositories, issue threads, documents, chat channels, and more.
