@@ -48,6 +48,11 @@ Use `--conversation-id` and `--correlation-id` when sending a reply. Use `--expi
 
 Use the directory adapter only on a trusted filesystem with atomic hard-link creation. Expect repeated delivery until acknowledgment. Give concurrent workers different IDs: this draft provides no exclusive task claim, authentication, encryption, global ordering, or exactly-once side effects. An invalid stored message stops the read with an error; report it without silently deleting it.
 
+For shared-mount validation, failure recovery or cleanup decisions, read
+[references/filesystem.md](references/filesystem.md). The mount probe requires an
+explicit existing directory and only removes its own scratch. A passing local
+probe does not establish multi-node coherence or power-loss durability.
+
 ## Experimental pipes
 
 For an explicitly selected local POSIX pipe connection, read
