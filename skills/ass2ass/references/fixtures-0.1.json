@@ -1,0 +1,168 @@
+{
+  "version": "0.1",
+  "cases": [
+    {
+      "name": "request",
+      "schema_valid": true,
+      "valid": true,
+      "expired": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "broadcast",
+      "schema_valid": true,
+      "valid": true,
+      "expired": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"*\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "expired",
+      "schema_valid": true,
+      "valid": true,
+      "expired": true,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":\"2001-01-01T00:00:00+00:00\",\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "unknown-version",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"9\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "path-id",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"../../escape\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "uppercase-id",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"ABCDEF00-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "blank-sender",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"   \",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "broadcast-sender",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"*\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "unknown-field",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"},\"surprise\":true}"
+    },
+    {
+      "name": "array-payload",
+      "schema_valid": false,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":[]}"
+    },
+    {
+      "name": "naive-time",
+      "schema_valid": true,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "expiry-before-creation",
+      "schema_valid": true,
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":\"1999-01-01T00:00:00+00:00\",\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "duplicate-json-key",
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "nonfinite-number",
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"bad\":NaN,\"task\":\"Review the interface\",\"unicode\":\"💌\"}}"
+    },
+    {
+      "name": "truncated-json",
+      "valid": false,
+      "raw": "{\"version\":\"0.1\",\"id\":\"00000000-0000-4000-8000-000000000001\",\"sender\":\"planner\",\"recipient\":\"builder\",\"kind\":\"request\",\"conversation_id\":\"00000000-0000-4000-8000-000000000002\",\"correlation_id\":null,\"created_at\":\"2000-01-01T00:00:00+00:00\",\"expires_at\":null,\"payload\":{\"task\":\"Review the interface\",\"unicode\":\"💌\"}"
+    }
+  ],
+  "sequences": [
+    {
+      "name": "identical-retry",
+      "messages": [
+        {
+          "version": "0.1",
+          "id": "00000000-0000-4000-8000-000000000001",
+          "sender": "planner",
+          "recipient": "builder",
+          "kind": "request",
+          "conversation_id": "00000000-0000-4000-8000-000000000002",
+          "correlation_id": null,
+          "created_at": "2000-01-01T00:00:00+00:00",
+          "expires_at": null,
+          "payload": {
+            "task": "Review the interface",
+            "unicode": "💌"
+          }
+        },
+        {
+          "version": "0.1",
+          "id": "00000000-0000-4000-8000-000000000001",
+          "sender": "planner",
+          "recipient": "builder",
+          "kind": "request",
+          "conversation_id": "00000000-0000-4000-8000-000000000002",
+          "correlation_id": null,
+          "created_at": "2000-01-01T00:00:00+00:00",
+          "expires_at": null,
+          "payload": {
+            "task": "Review the interface",
+            "unicode": "💌"
+          }
+        }
+      ],
+      "expected": "one pending logical message; identical publication converges"
+    },
+    {
+      "name": "id-collision",
+      "messages": [
+        {
+          "version": "0.1",
+          "id": "00000000-0000-4000-8000-000000000001",
+          "sender": "planner",
+          "recipient": "builder",
+          "kind": "request",
+          "conversation_id": "00000000-0000-4000-8000-000000000002",
+          "correlation_id": null,
+          "created_at": "2000-01-01T00:00:00+00:00",
+          "expires_at": null,
+          "payload": {
+            "task": "Review the interface",
+            "unicode": "💌"
+          }
+        },
+        {
+          "version": "0.1",
+          "id": "00000000-0000-4000-8000-000000000001",
+          "sender": "planner",
+          "recipient": "builder",
+          "kind": "request",
+          "conversation_id": "00000000-0000-4000-8000-000000000002",
+          "correlation_id": null,
+          "created_at": "2000-01-01T00:00:00+00:00",
+          "expires_at": null,
+          "payload": {
+            "different": true
+          }
+        }
+      ],
+      "expected": "reject second publication without replacing first message"
+    }
+  ]
+}
