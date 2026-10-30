@@ -85,8 +85,14 @@ Read the [protocol](skills/ass2ass/references/protocol.md) and [surface mappings
 ## Development
 
 ```bash
+python3 -m pip install '.[test]'
 PYTHONPATH=skills/ass2ass/scripts python3 -m unittest discover -s tests -v
 ```
+
+Building a new backend? Start with the [common contract, schema, interoperability
+fixtures and capability matrix](skills/ass2ass/references/adapter-contract.md).
+The reusable conformance suite checks the same handoff semantics across local
+directories, anonymous pipes and FIFOs. Same envelope, better manners.
 
 ## Experimental backends: enter through the side pipe
 
