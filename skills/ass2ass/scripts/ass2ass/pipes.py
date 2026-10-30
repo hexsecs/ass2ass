@@ -26,7 +26,7 @@ class PipeSurface:
 
     def __init__(self, read_fd, write_fd, recipient, peer, *, timeout=5.0,
                  max_messages=10000, max_history_bytes=16 * 1024 * 1024,
-                 wait_for_writer=False):
+                 wait_for_writer=False, codec=None):
         if os.name != "posix":
             raise OSError("experimental pipes require POSIX")
         for name in (recipient, peer):
@@ -47,6 +47,15 @@ class PipeSurface:
         self.read_fd, self.write_fd = read_fd, write_fd
         self.recipient, self.peer = recipient, peer
         self.timeout, self.max_messages = timeout, max_messages
+        self.codec = codec
+        if codec is not None:
+            from .wire import MAX_WIRE_BYTES
+            if codec.local != recipient or codec.peer != peer:
+                raise ProtocolError("codec identities must match the pipe endpoints")
+            codec.validate_duplex()
+            self._frame_limit = MAX_WIRE_BYTES
+        else:
+            self._frame_limit = MAX_MESSAGE_BYTES
         self.max_history_bytes = max_history_bytes
         self._incoming_bytes = self._outgoing_bytes = 0
         self._buffer = bytearray()
@@ -62,7 +71,7 @@ class PipeSurface:
 
     @classmethod
     def open_fifos(cls, read_path, write_path, recipient, peer, *, timeout=5.0,
-                   max_messages=10000, max_history_bytes=16 * 1024 * 1024):
+                   max_messages=10000, max_history_bytes=16 * 1024 * 1024, codec=None):
         """Open two existing FIFOs; caller owns creation/removal of their paths."""
         if os.name != "posix":
             raise OSError("experimental FIFOs require POSIX")
@@ -95,7 +104,7 @@ class PipeSurface:
                     time.sleep(min(0.01, remaining))
             return cls(*fds, recipient, peer, timeout=timeout,
                        max_messages=max_messages, max_history_bytes=max_history_bytes,
-                       wait_for_writer=True)
+                       wait_for_writer=True, codec=codec)
         except BaseException:
             for fd in fds:
                 os.close(fd)
@@ -120,18 +129,20 @@ class PipeSurface:
                 raw = bytes(self._buffer[:split])
                 del self._buffer[:split + 1]
                 try:
-                    return Message.from_json(raw.decode("utf-8"))
+                    if len(raw) > self._frame_limit:
+                        raise ProtocolError("pipe frame exceeds configured limit")
+                    return self.codec.decode(raw) if self.codec else Message.from_json(raw.decode("utf-8"))
                 except (UnicodeDecodeError, ProtocolError) as exc:
                     self._broken = True
                     raise ProtocolError(f"invalid pipe frame: {exc}") from exc
-            if len(self._buffer) > MAX_MESSAGE_BYTES:
+            if len(self._buffer) > self._frame_limit:
                 self._broken = True
-                raise ProtocolError("pipe frame exceeds 1 MiB")
+                raise ProtocolError("pipe frame exceeds configured limit")
             ready, _, _ = select.select([self.read_fd], [], [], self._remaining(deadline))
             if not ready:
                 raise TimeoutError("pipe read timed out")
             try:
-                chunk = os.read(self.read_fd, min(65536, MAX_MESSAGE_BYTES + 1 - len(self._buffer)))
+                chunk = os.read(self.read_fd, min(65536, self._frame_limit + 1 - len(self._buffer)))
             except BlockingIOError:
                 continue
             if not chunk:
@@ -159,9 +170,10 @@ class PipeSurface:
             return message.id
         if len(self._outgoing) >= self.max_messages:
             raise ProtocolError("outgoing session history limit reached")
-        frame = (message.to_json() + "\n").encode("utf-8")
-        if self._outgoing_bytes + len(frame) - 1 > self.max_history_bytes:
+        canonical_size = len(message.to_json().encode("utf-8"))
+        if self._outgoing_bytes + canonical_size > self.max_history_bytes:
             raise ProtocolError("outgoing session byte budget reached")
+        frame = (self.codec.encode(message) if self.codec else message.to_json().encode("utf-8")) + b"\n"
         view = memoryview(frame)
         deadline = time.monotonic() + self.timeout
         try:
@@ -183,7 +195,7 @@ class PipeSurface:
             self._broken = True
             raise
         self._outgoing[message.id] = message.to_json()
-        self._outgoing_bytes += len(frame) - 1
+        self._outgoing_bytes += canonical_size
         return message.id
 
     @staticmethod

@@ -9,9 +9,16 @@ description = "Agentic Signaling System to Any Shared Surface: agent communicati
 requires-python = ">=3.10"
 dependencies = []
 
+[project.optional-dependencies]
+cbor = ["cbor2>=5.6.5,<6"]
+protection = ["jwcrypto>=1.5.6,<2"]
+experimental = ["cbor2>=5.6.5,<6", "jwcrypto>=1.5.6,<2"]
+
 [project.scripts]
 ass2ass = "ass2ass.__main__:main"
 ass2ass-pipe = "ass2ass.pipe_cli:main"
+ass2ass-wire = "ass2ass.wire_cli:main"
+ass2ass-ssh = "ass2ass.ssh_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["skills/ass2ass/scripts"]

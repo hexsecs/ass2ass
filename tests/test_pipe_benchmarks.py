@@ -15,6 +15,15 @@ spec.loader.exec_module(benchmark)
 
 @unittest.skipUnless(os.name == "posix", "experimental POSIX benchmark only")
 class BenchmarkTests(unittest.TestCase):
+    def test_codec_page_matches_measured_sizes(self):
+        spec = importlib.util.spec_from_file_location("wire_size_benchmarks", ROOT / "benchmarks/codecs.py")
+        sizes = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(sizes)
+        raw = json.loads((ROOT / "docs/results/codecs.json").read_text())
+        self.assertEqual(sizes.render(raw), (ROOT / "docs/codec-metrics.md").read_text())
+        self.assertEqual(len(raw["rows"]), 32)
+        self.assertTrue(all(row["round_trip_preserved"] for row in raw["rows"]))
+
     def test_committed_leaderboard_is_generated_from_raw_results(self):
         raw = json.loads((ROOT / "docs/results/pipes.json").read_text())
         self.assertEqual(benchmark.render(raw), (ROOT / "docs/leaderboard.md").read_text())

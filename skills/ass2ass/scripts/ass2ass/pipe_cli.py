@@ -9,6 +9,7 @@ import time
 
 from .pipes import PipeSurface
 from .protocol import Message, ProtocolError
+from .wire_cli import add_wire_arguments, codec_from_args
 
 
 @contextmanager
@@ -83,6 +84,7 @@ def main(argv=None):
     parser.add_argument("--timeout", type=float, default=5.0, help="seconds per complete exchange")
     parser.add_argument("--count", type=int, default=1, help="requests before exit")
     parser.add_argument("--delay", type=float, default=0.0, help="test-only delay before each request read")
+    add_wire_arguments(parser)
     args = parser.parse_args(argv)
     if bool(args.read_fifo) != bool(args.write_fifo):
         parser.error("specify both FIFO paths, or neither for stdin/stdout")
@@ -91,15 +93,16 @@ def main(argv=None):
     if not math.isfinite(args.timeout) or args.timeout <= 0:
         parser.error("timeout must be positive and finite")
     try:
+        codec = codec_from_args(args, args.recipient, args.peer)
         if args.read_fifo:
             surface = PipeSurface.open_fifos(args.read_fifo, args.write_fifo,
-                                             args.recipient, args.peer, timeout=args.timeout)
+                                             args.recipient, args.peer, timeout=args.timeout, codec=codec)
         else:
             # stdout is the wire; all errors go to stderr. Duplicate ownership
             # avoids closing Python's actual stdio objects on context exit.
             fds = [os.dup(sys.stdin.fileno()), os.dup(sys.stdout.fileno())]
             try:
-                surface = PipeSurface(*fds, args.recipient, args.peer, timeout=args.timeout)
+                surface = PipeSurface(*fds, args.recipient, args.peer, timeout=args.timeout, codec=codec)
             except BaseException:
                 for fd in fds:
                     os.close(fd)

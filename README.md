@@ -98,10 +98,15 @@ python3 examples/pipe_round_trip.py
 python3 examples/pipe_round_trip.py --mode fifo
 ```
 
-Explore [experimental backend protocols](docs/experimental-backends.md), or inspect
+Explore [experimental backend protocols](docs/experimental-backends.md), choose
+[optional protection, CBOR and SSH](docs/layers.md), or inspect
 the [leaderboard and metrics](docs/leaderboard.md). The honours include **Fastest
 ASS in the West**, **Least Clogged**, and **Most Lubed**. The jokes are cheeky;
 the measurements come with receipts.
+
+Protection is optional: existing JSON workflows stay key-free. Opt into signatures,
+encryption, or both when your peer agrees to the same wrapping. Compare the
+[actual codec size costs](docs/codec-metrics.md) before declaring your package tighter.
 
 Follow the [roadmap](https://github.com/hexsecs/ass2ass/issues/1) for interoperability
 fixtures, a JSON Schema, additional surfaces, and future identity/work-claim design.

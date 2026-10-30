@@ -66,4 +66,4 @@ python3 benchmarks/pipes.py --render docs/results/pipes.json --markdown docs/lea
 
 The JSON records exact workload settings, all RTT samples, failures, environment and measurement boundaries. The runner has per-exchange and overall deadlines. A failed run exits nonzero and writes a failure record instead of a new leaderboard. No combined score: different cheeks, different strengths.
 
-[Experimental backend protocols](experimental-backends.md) · [README](../README.md)
+[Codec size measurements](codec-metrics.md) · [Experimental backend protocols](experimental-backends.md) · [README](../README.md)
