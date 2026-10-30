@@ -16,10 +16,18 @@ jobs:
       - run: python -m unittest discover -s tests -v
         env:
           PYTHONPATH: skills/ass2ass/scripts
+      - run: python -m pip install '.[experimental]'
+      - run: python -m unittest discover -s tests -v
+        env:
+          PYTHONPATH: skills/ass2ass/scripts
       - run: python examples/round_trip.py
       - run: python examples/pipe_round_trip.py
       - run: python examples/pipe_round_trip.py --mode fifo
+      - run: python examples/protected_round_trip.py --encoding cbor --protection signed-encrypted
+      - run: python benchmarks/codecs.py --output /tmp/codecs.json --markdown /tmp/codec-metrics.md
       - run: python benchmarks/pipes.py --messages 5 --slow-messages 2 --repeats 1 --output /tmp/pipes.json --markdown /tmp/leaderboard.md
       - run: python -m pip install .
       - run: ass2ass --help
       - run: ass2ass-pipe --help
+      - run: ass2ass-wire --help
+      - run: ass2ass-ssh --help

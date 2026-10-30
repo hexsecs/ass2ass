@@ -38,6 +38,7 @@ when it has earned more than a suggestive name.
 | Shared filesystem | Existing reference adapter | `ass2ass --surface PATH` | Stored envelopes, recipient-local receipt markers; trusted filesystem required |
 | Anonymous pipes / stdin–stdout | Experimental prototype | `python3 examples/pipe_round_trip.py` | Two local processes, bidirectional NDJSON, session-local receipts |
 | Named pipes / FIFOs | Experimental prototype | `python3 examples/pipe_round_trip.py --mode fifo` | Two private FIFO paths, one for each direction; POSIX only |
+| SSH | Experimental launcher; local fake-SSH tests | `ass2ass-ssh HOST --as LOCAL --peer PEER` | Remote echo worker through normal OpenSSH authentication and strict host-key checking |
 | Git repository files | Roadmap | Not implemented | Versioned envelopes; synchronization still needs a design |
 | GitHub | Roadmap | Not implemented | Issues, pull request threads, or discussions |
 | GitLab | Roadmap | Not implemented | Issues or merge request discussions |
@@ -48,6 +49,10 @@ when it has earned more than a suggestive name.
 The remote surfaces have [agent-executed mappings](../skills/ass2ass/references/surfaces.md),
 not automated integrations. A place on this list does not connect an account or
 grant a peer access.
+
+Choose [optional protection and encodings](layers.md) independently of transport.
+Default JSON remains unchanged; CBOR and JWS/JWE protection are explicit opt-ins.
+The [codec metrics](codec-metrics.md) count the entire package, wrapping included.
 
 ## Pipe dreams you can actually run
 
@@ -77,7 +82,7 @@ the other endpoint. The two-process example shows the complete connection setup.
 
 ## The small print on the pipe
 
-| Capability | Experimental pipe behavior |
+| Capability | Default experimental pipe behavior (JSON, no protection) |
 | --- | --- |
 | Framing | One complete UTF-8 JSON envelope plus LF; compact encoder escapes payload newlines |
 | Size | At most 1 MiB JSON per frame, plus one LF byte |
@@ -92,6 +97,10 @@ the other endpoint. The two-process example shows the complete connection setup.
 | Reconnect | Explicit new session; no automatic replay. Caller must reconcile ambiguous prior work |
 | Platforms | POSIX pipe descriptors and FIFOs; this prototype does not support Windows named pipes |
 | Trust | Local process/path access controls; sender strings and receipts are not authenticated |
+
+Optional [wire profiles](layers.md) add CBOR and JWS/JWE protection. Wrapped records
+have a 3 MiB frame limit while retaining the 1 MiB inner-envelope limit. These
+features are configured at both endpoints; plaintext remains the default.
 
 The history limits count receipt envelopes too. The byte budget covers retained
 canonical JSON, not total process memory. Set both for your workload. Share neither endpoint across threads

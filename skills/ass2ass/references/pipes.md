@@ -3,6 +3,11 @@
 This opt-in POSIX prototype preserves the v0.1 envelope. It is a session-local
 transport, not a durable queue. The existing directory helper remains independent.
 
+The behavior below describes default JSON without message protection. For explicit
+optional CBOR or JWS/JWE wrapping, read [layers.md](layers.md). `PipeSurface`
+accepts a configured `codec`; wrapped records allow 3 MiB while the inner envelope
+remains bounded to 1 MiB. Missing protection keys or mismatched policies fail.
+
 ## Wire and endpoint contract
 
 Send one UTF-8 JSON envelope followed by LF. Payload newlines must be JSON-escaped;

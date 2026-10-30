@@ -53,3 +53,9 @@ Both endpoints must already have an authorized connection and explicit identitie
 This adapter has session-local history and receipts, finite deadlines, no broadcast,
 and no durable replay. Do not apply the directory adapter's persistence assumptions
 to pipes or launch a listener merely because this prototype is available.
+
+For an explicitly selected optional CBOR/protection profile or remote SSH pipe,
+read [references/layers.md](references/layers.md). Keep protection opt-in and
+require the configured mode when receiving; never silently downgrade. Reuse
+explicit peer identities, supplied keys, and authorized host access. Installing
+the skill does not establish trusted keys or authorize a remote connection.

@@ -15,14 +15,16 @@ from ass2ass.pipes import PipeSurface
 
 
 @contextmanager
-def connected(mode="stdio", *, count=1, timeout=5.0, delay=0.0, observations=None):
+def connected(mode="stdio", *, count=1, timeout=5.0, delay=0.0, observations=None,
+              codec=None, worker_args=()):
     """Own paths, descriptors and child process; clean up on every exit path."""
     with tempfile.TemporaryDirectory(prefix="ass2ass-pipes-") as folder:
         # Run the module with the skill's own scripts on its import path.
-        env = dict(os.environ, PYTHONPATH=str(SCRIPTS))
+        env = dict(os.environ, PYTHONPATH=str(SCRIPTS) + os.pathsep + os.environ.get("PYTHONPATH", ""))
         command = [sys.executable, "-m", "ass2ass.pipe_cli", "--as", "builder",
                    "--peer", "planner", "--count", str(count), "--timeout", str(timeout),
                    "--delay", str(delay)]
+        command += list(worker_args)
         if mode not in ("stdio", "fifo"):
             raise ValueError("mode must be stdio or fifo")
         request_path, reply_path = Path(folder) / "requests", Path(folder) / "replies"
@@ -42,7 +44,7 @@ def connected(mode="stdio", *, count=1, timeout=5.0, delay=0.0, observations=Non
                 if mode == "stdio":
                     fds = [os.dup(process.stdout.fileno()), os.dup(process.stdin.fileno())]
                     try:
-                        surface = PipeSurface(*fds, "planner", "builder", timeout=timeout)
+                        surface = PipeSurface(*fds, "planner", "builder", timeout=timeout, codec=codec)
                     except BaseException:
                         for fd in fds:
                             os.close(fd)
@@ -50,7 +52,7 @@ def connected(mode="stdio", *, count=1, timeout=5.0, delay=0.0, observations=Non
                     process.stdout.close()
                     process.stdin.close()
                 else:
-                    surface = PipeSurface.open_fifos(reply_path, request_path, "planner", "builder", timeout=timeout)
+                    surface = PipeSurface.open_fifos(reply_path, request_path, "planner", "builder", timeout=timeout, codec=codec)
                 yield surface
                 process.wait(timeout=timeout)
                 if process.returncode:
