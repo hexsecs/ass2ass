@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/hexsecs/ass2ass/blob/main/skills/ass2ass/references/envelope-0.1.schema.json",
+  "title": "ASS2ASS envelope draft 0.1",
+  "description": "Structural schema. Validate raw JSON uniqueness/size and timestamp semantics with the protocol implementation as well.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "sender",
+    "recipient",
+    "kind",
+    "conversation_id",
+    "correlation_id",
+    "created_at",
+    "expires_at",
+    "payload"
+  ],
+  "properties": {
+    "version": {
+      "const": "0.1"
+    },
+    "id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "sender": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/identity"
+        },
+        {
+          "not": {
+            "const": "*"
+          }
+        }
+      ]
+    },
+    "recipient": {
+      "$ref": "#/$defs/identity"
+    },
+    "kind": {
+      "enum": [
+        "request",
+        "response",
+        "event",
+        "cancel",
+        "error"
+      ]
+    },
+    "conversation_id": {
+      "$ref": "#/$defs/uuid"
+    },
+    "correlation_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/uuid"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "description": "Timezone-aware ISO 8601 timestamp; semantic validation required."
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "When present, a timezone-aware timestamp strictly later than created_at; semantic validation required."
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "minLength": 36,
+      "maxLength": 36,
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+    },
+    "identity": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "\\S"
+    }
+  },
+  "$comment": "JSON Schema validates parsed structure, not duplicate raw object keys, finite numeric tokens, UTF-8 byte limits, timezone parsing, chronological expiry, delivery-time expiry filtering or cross-message correlation. ProtocolError is authoritative for those rules."
+}

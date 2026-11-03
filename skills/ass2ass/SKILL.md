@@ -7,6 +7,11 @@ description: Coordinate AI agents using ASS2ASS (Agentic Signaling System to Any
 
 Exchange explicit, structured messages through a surface both agents can access. Keep the envelope independent of the tool used to carry it. Treat version 0.1 as an experimental draft.
 
+When implementing or evaluating an adapter, read the
+[common contract and capability matrix](references/adapter-contract.md), including
+its schema, raw fixtures, and conformance recipe. Do not infer transport guarantees
+from the shared envelope alone.
+
 ## Establish the channel
 
 1. Resolve the user-authorized surface, exact location, your stable agent ID, and peer ID. Reuse explicit task context. Ask for missing routing information; do not guess a recipient or probe unrelated channels.

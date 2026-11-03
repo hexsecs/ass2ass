@@ -2,6 +2,11 @@
 
 ASS2ASS means **Agentic Signaling System to Any Shared Surface**. A surface carries immutable JSON envelopes; agents supply the interpretation and execution policy.
 
+The [structural JSON Schema](envelope-0.1.schema.json), [raw interoperability
+fixtures](fixtures-0.1.json), and [adapter contract/capability matrix](adapter-contract.md)
+make this draft inspectable across implementations. Schema validation complements
+the semantic and delivery checks below.
+
 ## Envelope
 
 All fields below are required, including nullable fields. Reject unknown fields in 0.1. Future incompatible changes require a different version.
