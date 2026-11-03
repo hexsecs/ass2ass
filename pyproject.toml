@@ -20,6 +20,7 @@ ass2ass = "ass2ass.__main__:main"
 ass2ass-pipe = "ass2ass.pipe_cli:main"
 ass2ass-wire = "ass2ass.wire_cli:main"
 ass2ass-ssh = "ass2ass.ssh_cli:main"
+ass2ass-mount-probe = "ass2ass.mount_probe:main"
 
 [tool.setuptools.packages.find]
 where = ["skills/ass2ass/scripts"]

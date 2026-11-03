@@ -32,3 +32,4 @@ jobs:
       - run: ass2ass-pipe --help
       - run: ass2ass-wire --help
       - run: ass2ass-ssh --help
+      - run: ass2ass-mount-probe --directory "$RUNNER_TEMP" --timeout 10

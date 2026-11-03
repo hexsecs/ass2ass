@@ -59,6 +59,9 @@ No adapter may claim stronger guarantees than its medium supports. Directory rec
 
 ## Directory mapping
 
+See [filesystem.md](filesystem.md) for failure/restart behavior, shared-mount
+requirements, the opt-in scratch probe, and operator-owned cleanup policy.
+
 Store complete envelopes at `messages/<id>.json`. Write a temporary file on the same filesystem, flush and fsync it, then atomically hard-link it to the final name without replacing anything. Remove the temporary name afterward. Identical retries converge; conflicting IDs fail.
 
 Store receipt markers at `receipts/<sha256(recipient UTF-8)>/<id>`. Use only canonical UUIDs for ID path components. Acknowledgment is local to each recipient, including broadcasts. The directory adapter verifies the original recipient before writing a marker. The marker is empty and idempotent.

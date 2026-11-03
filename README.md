@@ -94,6 +94,10 @@ fixtures and capability matrix](skills/ass2ass/references/adapter-contract.md).
 The reusable conformance suite checks the same handoff semantics across local
 directories, anonymous pipes and FIFOs. Same envelope, better manners.
 
+Using a shared mount? Read [filesystem guarantees, the opt-in mount probe, and
+cleanup ownership](skills/ass2ass/references/filesystem.md). Check your backend
+before getting attached.
+
 ## Experimental backends: enter through the side pipe
 
 The opt-in POSIX pipe prototype exchanges the same envelopes through stdin/stdout
